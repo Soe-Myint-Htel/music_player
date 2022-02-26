@@ -61,6 +61,8 @@ function loadTrack(index){
 
     current.innerHTML = index + 1;
     count.innerHTML = musics.length;
+
+    setInterval(currTime, 1000);
 }
 loadTrack(index);
 
@@ -82,6 +84,37 @@ function justPause(){
     playing = false;
     play.className = "fas fa-play"
 }
+// prev song
+function prevSong(){
+    if(index <= 0) index = musics.length - 1;
+    else index--;
+    loadTrack(index);
+    playing = false;
+    checkMusic();
+}
+
+// next song
+function nextSong(){
+    if(index >= musics.length - 1) index = 0;
+    else index++;
+    loadTrack(index);
+    playing = false;
+    checkMusic();
+}
+// slider 
+function currTime(){
+    range.value = track.currentTime * (100 / track.duration);
+    if(track.ended) nextSong();
+}
+
+// set range
+function setRange(){
+    track.currentTime = range.value * (track.duration / 100);
+}
+
 
 // event listener
 play.addEventListener("click", checkMusic);
+prev.addEventListener("click", prevSong);
+next.addEventListener("click", nextSong);
+range.addEventListener("change", setRange);
