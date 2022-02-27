@@ -9,6 +9,9 @@ const prev = document.querySelector("#prev");
 const play = document.querySelector("#play");
 const next = document.querySelector("#next");
 const range = document.querySelector("#range");
+const repeatAll = document.querySelector("#repeatAll");
+const repeatOne = document.querySelector("#repeatOne");
+const shuffle = document.querySelector("#shuffle");
 
 let musics = [
     {
@@ -155,8 +158,45 @@ function loadSingle(event) {
         menu.classList.toggle("fa-times");
     }
 }
+// repeat one
+function repeatASong(e){
+    console.log(e.target)
+    e.target.classList.add("repeatASong");
+    if(e.target.classList.contains("repeatASong")){
+        track.loop = true;
+        repeatAll.classList.remove("repeatAllSong");
+        shuffle.classList.remove("shuffleSong");
+    };
+}
 
+// repeat all
+function repeatAllSongs(e){
+    e.target.classList.add("repeatAllSong");
+    if(e.target.classList.contains("repeatAllSong")){
+        track.loop = false;
+        repeatOne.classList.remove("repeatASong");
+        shuffle.classList.remove("shuffleSong");
+    };
+}
+// shuffle song
+function shuffSong(){
+    let shuffleIndex = Math.floor(Math.random() * musics.length);
+        loadTrack(shuffleIndex);
+        playing = false;
+        checkMusic();
+}
+function shuffleSong(e){
+    e.target.classList.add("shuffleSong");
+    if(e.target.classList.contains("shuffleSong")){
+        shuffSong();
 
+        track.addEventListener("ended", shuffSong);
+        repeatOne.classList.remove("repeatASong");
+        repeatAll.classList.remove("repeatAllSong");
+    };
+    
+}
+ 
 // event listener
 play.addEventListener("click", checkMusic);
 prev.addEventListener("click", prevSong);
@@ -164,3 +204,6 @@ next.addEventListener("click", nextSong);
 range.addEventListener("change", setRange);
 menu.addEventListener("click", toggleMenu);
 navList.addEventListener("click", loadSingle)
+repeatAll.addEventListener("click", repeatAllSongs);
+repeatOne.addEventListener("click", repeatASong);
+shuffle.addEventListener("click", shuffleSong);
